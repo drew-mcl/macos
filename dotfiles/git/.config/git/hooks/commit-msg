@@ -7,24 +7,3 @@ if [[ -z "$commit_msg_file" || ! -f "$commit_msg_file" ]]; then
   echo "[commit-msg] Commit message file not found: ${commit_msg_file:-<missing>}" >&2
   exit 1
 fi
-
-status=0
-
-if command -v cz >/dev/null 2>&1; then
-  if ! cz check --commit-msg-file "$commit_msg_file"; then
-    echo "[commit-msg] Commitizen conventional commit check failed." >&2
-    status=1
-  fi
-else
-  echo "[commit-msg] Commitizen (cz) not found; skipping check." >&2
-fi
-
-if command -v gitlint >/dev/null 2>&1; then
-  if ! gitlint --msg-filename "$commit_msg_file"; then
-    status=1
-  fi
-else
-  echo "[commit-msg] gitlint not found; skipping check." >&2
-fi
-
-exit $status

@@ -21,6 +21,9 @@ path_prepend_if_exists() {
   done
 }
 
+# -- spelling
+alias expo='nocorrect expo'
+
 # --- History & editing -------------------------------------------------------
 HISTFILE="$HOME/.zsh_history"
 HISTSIZE=50000
@@ -47,19 +50,31 @@ if [[ -d "$ZSH" ]]; then
   source "$ZSH/oh-my-zsh.sh"
 fi
 
+typeset -ga __plugin_prefixes=()
 if command -v brew >/dev/null 2>&1; then
   brew_prefix="$(brew --prefix 2>/dev/null)"
-  if [[ -n $brew_prefix ]]; then
-    asugg="$brew_prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
-    [[ -r $asugg ]] && source "$asugg"
-    synhl="$brew_prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
-    [[ -r $synhl ]] && source "$synhl"
-    fzf_dir="$brew_prefix/opt/fzf"
-    [[ -r "$fzf_dir/shell/key-bindings.zsh" ]] && source "$fzf_dir/shell/key-bindings.zsh"
-    [[ -r "$fzf_dir/shell/completion.zsh" ]] && source "$fzf_dir/shell/completion.zsh"
-  fi
-  unset brew_prefix asugg synhl fzf_dir
+  [[ -n $brew_prefix ]] && __plugin_prefixes+=("$brew_prefix")
 fi
+for candidate in "$HOME/.nix-profile" "/etc/profiles/per-user/$USER" "/run/current-system/sw"; do
+  [[ -d $candidate ]] && __plugin_prefixes+=("$candidate")
+done
+for prefix in "${__plugin_prefixes[@]}"; do
+  [[ -z ${__asugg_loaded:-} ]] && {
+    asugg="$prefix/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+    [[ -r $asugg ]] && { source "$asugg"; __asugg_loaded=1; }
+  }
+  [[ -z ${__synhl_loaded:-} ]] && {
+    synhl="$prefix/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+    [[ -r $synhl ]] && { source "$synhl"; __synhl_loaded=1; }
+  }
+  [[ -z ${__fzf_loaded:-} ]] && {
+    [[ -r "$prefix/share/fzf/key-bindings.zsh" ]] && source "$prefix/share/fzf/key-bindings.zsh" && __fzf_loaded=1
+    [[ -r "$prefix/share/fzf/completion.zsh" ]] && source "$prefix/share/fzf/completion.zsh"
+    [[ -r "$prefix/opt/fzf/shell/key-bindings.zsh" ]] && source "$prefix/opt/fzf/shell/key-bindings.zsh" && __fzf_loaded=1
+    [[ -r "$prefix/opt/fzf/shell/completion.zsh" ]] && source "$prefix/opt/fzf/shell/completion.zsh"
+  }
+done
+unset __plugin_prefixes prefix asugg synhl __asugg_loaded __synhl_loaded __fzf_loaded brew_prefix
 
 # --- Tooling hooks -----------------------------------------------------------
 if command -v mise >/dev/null 2>&1; then
