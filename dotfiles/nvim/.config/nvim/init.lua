@@ -1,5 +1,2 @@
--- LazyVim Configuration
--- https://www.lazyvim.org/
-
--- Bootstrap lazy.nvim
+-- bootstrap lazy.nvim, LazyVim and your plugins
 require("config.lazy")
