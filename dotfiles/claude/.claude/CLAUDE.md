@@ -65,9 +65,7 @@ feat(scope): description
 
 **Never include co-authored-by lines.**
 
-## Claude Code Setup
-
-### Enabled Plugins
+## Claude Code Plugins
 
 | Plugin | Purpose |
 |--------|---------|
@@ -93,13 +91,143 @@ feat(scope): description
 - **Playwright**: Browser automation
 - **Context7**: Library documentation lookup
 
-### Key Skills
+### Skills
 
-- `/feature-dev` - Start guided feature development
-- `/commit` - Create git commit
-- `/commit-push-pr` - Commit, push, and open PR
-- `/code-review` - Review a pull request
-- `/review-pr` - Comprehensive PR review with agents
+| Skill | Description |
+|-------|-------------|
+| `/feature-dev` | Start guided feature development |
+| `/commit` | Create git commit |
+| `/commit-push-pr` | Commit, push, and open PR |
+| `/code-review` | Review a pull request |
+| `/review-pr` | Comprehensive PR review with agents |
+
+## Available CLI Tools
+
+### Git & Version Control
+
+| Tool | Description |
+|------|-------------|
+| `git` | Version control |
+| `git-delta` | Better git diff viewer |
+| `git-cliff` | Changelog generator |
+| `gh` | GitHub CLI |
+| `glab` | GitLab CLI |
+| `lazygit` | Terminal UI for git |
+
+### Search & Navigation
+
+| Tool | Description |
+|------|-------------|
+| `ripgrep` (`rg`) | Fast grep replacement |
+| `fd` | Fast find replacement |
+| `fzf` | Fuzzy finder |
+| `zoxide` (`z`) | Smarter cd with frecency |
+| `yazi` (`y`) | Terminal file manager |
+| `tree` | Directory tree viewer |
+
+### File Viewing & Editing
+
+| Tool | Description |
+|------|-------------|
+| `bat` | cat with syntax highlighting |
+| `eza` | Modern ls replacement |
+| `neovim` (`nvim`) | Modern vim |
+
+### System Monitoring
+
+| Tool | Description |
+|------|-------------|
+| `bottom` (`btm`) | Better top/htop |
+| `procs` | Better ps |
+| `dust` | Better du (disk usage) |
+
+### Development
+
+| Tool | Description |
+|------|-------------|
+| `mise` | Runtime version manager (ruby, node, python, go) |
+| `direnv` | Per-directory environment variables |
+| `jq` | JSON processor |
+| `httpie` / `xh` | Better curl for APIs |
+| `hyperfine` | CLI benchmarking |
+| `tokei` | Code statistics |
+
+### Infrastructure
+
+| Tool | Description |
+|------|-------------|
+| `kubectl` | Kubernetes CLI |
+| `helm` | Kubernetes package manager |
+| `lazydocker` | Docker TUI |
+| `ansible` | Automation/config management |
+
+### Utilities
+
+| Tool | Description |
+|------|-------------|
+| `stow` | Symlink farm manager |
+| `tlrc` | tldr pages (command examples) |
+| `watchman` | File watcher |
+| `atuin` | Shell history with sync (Ctrl+R) |
+| `starship` | Cross-shell prompt |
+
+## Shell Aliases
+
+### Git
+
+| Alias | Expansion |
+|-------|-----------|
+| `gs` | `git status -sb` |
+| `gco` | `git checkout` |
+| `gb` | `git branch -vv` |
+| `gl` | `git log --oneline --graph --decorate` |
+| `gd` | `git diff` |
+| `gp` | `git pull --ff-only && git push` |
+| `gpm` | `git prep-merge` (interactive rebase onto default) |
+| `gpm1` | `git prep-merge-squash` (squash to one commit) |
+
+### GitLab
+
+| Alias | Description |
+|-------|-------------|
+| `gmr` | Create MR with `--fill --remove-source-branch` |
+| `gml` | List MRs assigned to me |
+| `gms` | MR status |
+| `gci` | View CI pipeline |
+| `gmco` | FZF picker to checkout an open MR |
+
+### Modern Replacements
+
+| Alias | Actual Command |
+|-------|----------------|
+| `cat` | `bat --paging=never` |
+| `less` | `bat` |
+| `du` | `dust` |
+| `ps` | `procs` |
+| `top`/`htop` | `btm` |
+| `vim`/`vi` | `nvim` |
+| `ll` | `eza -lah --git` |
+
+### Ruby
+
+| Alias | Description |
+|-------|-------------|
+| `be` | `bundle exec` |
+
+## Shell Functions
+
+| Function | Description |
+|----------|-------------|
+| `m [target]` | Run make from nearest parent Makefile |
+| `mt` | FZF picker for make targets |
+| `y` | Yazi file manager (cd on exit) |
+| `z <dir>` | Zoxide smart cd |
+| `sshx` | FZF SSH host picker from config |
+| `ssh-host <host>` | Generate per-host SSH key + config |
+| `repo` | FZF browse + clone GitHub/GitLab repos |
+| `aa` | FZF alias browser |
+| `envim` | Open nearest .env file in nvim |
+| `code-dotfiles` | Open dotfiles repo in VS Code |
 
 ## Development Workflows
 
@@ -119,13 +247,6 @@ bin/kamal deploy       # Deploy via Kamal
 - **Framework**: Minitest with `ActiveSupport::TestCase`
 - **Fixtures**: Located in `test/fixtures/`
 - **File structure**: Mirror app in tests (`app/models/user.rb` → `test/models/user_test.rb`)
-
-### Shell Helpers
-
-- `m` - Run `make` from nearest Makefile
-- `mt` - FZF picker for make targets
-- `gpm` / `gpm1` - Prep merge onto default branch
-- `gmr` - Create GitLab MR
 
 ### Common Patterns
 
