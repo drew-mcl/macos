@@ -1,0 +1,67 @@
+# Atuin - Shell History Configuration
+# https://docs.atuin.sh/configuration/config/
+
+# Where to store history database
+db_path = "~/.local/share/atuin/history.db"
+
+# How often to sync with server (set to 0 for local-only)
+auto_sync = false
+sync_frequency = "0"
+
+# Search settings
+search_mode = "fuzzy"
+filter_mode = "global"
+filter_mode_shell_up_key_binding = "session"
+
+# UI settings
+style = "compact"
+inline_height = 20
+show_preview = true
+show_help = true
+show_tabs = true
+exit_mode = "return-original"
+
+# IMPORTANT: Disable up arrow binding to preserve zsh-autosuggestions
+# Atuin will only use Ctrl+R for history search
+# Up arrow will still work for zsh-autosuggestions partial command completion
+enter_accept = true
+
+# History settings
+history_filter = [
+  "^cd ",
+  "^ls",
+  "^ll",
+  "^exit$",
+  "^clear$",
+]
+
+# Secrets filter - never record these
+secrets_filter = true
+cwd_filter = []
+
+# Record context
+workspaces = true
+record_frequency = "2m"
+
+# Keymap style (vim or emacs)
+keymap_mode = "auto"
+
+# Control cursor movement (needed for proper up arrow behavior)
+# vim-normal: Vim-style in normal mode
+# vim-insert: Vim-style in insert mode
+# emacs: Emacs-style (default for most shells)
+keymap_cursor = { emacs = "blink-block", vim_insert = "blink-block", vim_normal = "steady-block" }
+
+# Timestamp format
+# %Y-%m-%d %H:%M:%S = 2024-01-15 14:30:00
+timestamps_enabled = true
+time_format = "%Y-%m-%d %H:%M"
+
+# Word jump (ctrl+left/right)
+word_jump_mode = "emacs"
+
+# Stats settings
+stats = { common_prefix_length = 3 }
+
+# Network settings (for sync - disabled by default)
+sync_address = "https://api.atuin.sh"

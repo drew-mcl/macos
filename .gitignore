@@ -12,4 +12,5 @@ out/
 .venv/
 __pycache__/
 *.log
+vendor/
 

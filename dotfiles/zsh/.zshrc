@@ -41,7 +41,7 @@ export SPROMPT='zsh: correct %F{yellow}%R%f to %F{green}%r%f [nyae]? '
 # --- Oh My Zsh & plugins -----------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME=""
-plugins=(git fzf z)
+plugins=(git fzf)
 
 if [[ -d "$ZSH" ]]; then
   source "$ZSH/oh-my-zsh.sh"
@@ -76,6 +76,27 @@ if command -v go >/dev/null 2>&1; then
   path_prepend_if_exists "$GOBIN"
 fi
 
+# --- zoxide (smarter cd) -----------------------------------------------------
+if command -v zoxide >/dev/null 2>&1; then
+  eval "$(zoxide init zsh)"
+fi
+
+# --- atuin (shell history) ---------------------------------------------------
+# Binds to Ctrl+R only, preserving up arrow for zsh-autosuggestions
+if command -v atuin >/dev/null 2>&1; then
+  eval "$(atuin init zsh --disable-up-arrow)"
+fi
+
+# --- yazi (file manager with cd on exit) -------------------------------------
+function y() {
+  local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd
+  yazi "$@" --cwd-file="$tmp"
+  if cwd="$(command cat -- "$tmp")" && [ -n "$cwd" ] && [ "$cwd" != "$PWD" ]; then
+    builtin cd -- "$cwd"
+  fi
+  rm -f -- "$tmp"
+}
+
 # --- Prompt ------------------------------------------------------------------
 if command -v starship >/dev/null 2>&1; then
   eval "$(starship init zsh)"
@@ -98,6 +119,24 @@ alias gp='git pull --ff-only && git push'
 alias gpm='git prep-merge'
 alias gpm1='git prep-merge-squash'
 alias be='bundle exec'
+
+# Modern CLI aliases
+if command -v bat >/dev/null 2>&1; then
+  alias cat='bat --paging=never'
+  alias less='bat'
+fi
+if command -v dust >/dev/null 2>&1; then
+  alias du='dust'
+fi
+if command -v procs >/dev/null 2>&1; then
+  alias ps='procs'
+fi
+if command -v bottom >/dev/null 2>&1; then
+  alias top='btm'
+  alias htop='btm'
+fi
+alias vim='nvim'
+alias vi='nvim'
 
 if command -v glab >/dev/null 2>&1; then
   alias gmr='glab mr create --fill --remove-source-branch'
@@ -188,6 +227,22 @@ ssh-host() {
     return 1
   fi
   bash "$script" "$@"
+}
+
+envim() {
+  local dir="$PWD" envfile
+  while [[ "$dir" != "/" ]]; do
+    if [[ -f "$dir/.env" ]]; then
+      envfile="$dir/.env"
+      break
+    fi
+    dir="${dir:h}"
+  done
+  if [[ -z $envfile ]]; then
+    echo "No .env file found" >&2
+    return 1
+  fi
+  nvim "$envfile"
 }
 
 code-dotfiles() {

@@ -32,3 +32,20 @@ brew "libffi"
 brew "mise"
 brew "starship"
 brew "lazygit"
+
+# Modern CLI tools
+brew "yazi"              # Terminal file manager
+brew "zoxide"            # Smarter cd command
+brew "atuin"             # Shell history with sync
+brew "neovim"            # Modern vim
+
+# Additional dev tools
+brew "tlrc"              # Rust tldr client
+brew "hyperfine"         # CLI benchmarking
+brew "dust"              # Better du
+brew "bottom"            # Better top/htop
+brew "procs"             # Better ps
+brew "tokei"             # Code statistics
+brew "lazydocker"        # Docker TUI
+brew "httpie"            # Better curl for APIs
+brew "xh"                # Even faster httpie alternative
