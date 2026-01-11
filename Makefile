@@ -2,7 +2,7 @@ SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
 DOTFILES_DIR := $(CURDIR)/dotfiles
-STOW_PACKAGES := curl git glab ghostty gradle mise ruby ssh vscode zsh direnv starship
+STOW_PACKAGES := curl git glab ghostty gradle mise ruby ssh vscode zsh direnv starship yazi atuin nvim
 
 BREW := brew
 BREW_DIR := $(CURDIR)/brew
@@ -182,4 +182,8 @@ doctor:
 	@echo && echo "python: $$(command -v python3 || echo missing)" && python3 --version 2>/dev/null || true
 	@echo && echo "go: $$(command -v go || echo missing)" && go version 2>/dev/null || true
 	@echo && echo "glab: $$(command -v glab || echo missing)" && glab --version 2>/dev/null || true
+	@echo && echo "nvim: $$(command -v nvim || echo missing)" && nvim --version 2>/dev/null | head -1 || true
+	@echo && echo "yazi: $$(command -v yazi || echo missing)" && yazi --version 2>/dev/null || true
+	@echo && echo "zoxide: $$(command -v zoxide || echo missing)" && zoxide --version 2>/dev/null || true
+	@echo && echo "atuin: $$(command -v atuin || echo missing)" && atuin --version 2>/dev/null || true
 	@echo && echo "JAVA: $$(/usr/libexec/java_home -V 2>/dev/null || echo none)" || true
