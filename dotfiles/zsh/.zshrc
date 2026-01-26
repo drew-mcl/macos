@@ -137,6 +137,7 @@ if command -v bottom >/dev/null 2>&1; then
 fi
 alias vim='nvim'
 alias vi='nvim'
+alias clc='claude --dangerously-skip-permissions'
 
 if command -v glab >/dev/null 2>&1; then
   alias gmr='glab mr create --fill --remove-source-branch'
@@ -300,3 +301,6 @@ repo() {
   fi
   git clone "$url" "$destination_dir" && cd "$destination_dir"
 }
+
+# opencode
+export PATH=/Users/drew/.opencode/bin:$PATH

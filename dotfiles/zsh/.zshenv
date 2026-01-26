@@ -72,3 +72,6 @@ keychain-list() {
 
 # Load secrets on shell start
 _load_keychain_secrets
+
+# --- Claude Code Configuration ------------------------------------------------
+export CLAUDE_CODE_ENABLE_TASKS=true

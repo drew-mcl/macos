@@ -263,3 +263,12 @@ bin/kamal deploy       # Deploy via Kamal
 
 - **No emojis in code** - Use icon helpers
 - **Keep code idempotent** - Safe to re-run
+
+## Task Tracking
+
+**Always use Task tools** (TaskCreate, TaskUpdate, TaskList) instead of TodoWrite for tracking work items. The Task tools provide better progress visibility and persist across sessions.
+
+Environment variable required in shell profile:
+```bash
+export CLAUDE_CODE_ENABLE_TASKS=true
+```
