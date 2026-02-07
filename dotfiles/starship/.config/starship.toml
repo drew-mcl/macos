@@ -1,18 +1,18 @@
-# Catppuccin Macchiato palette colors on key modules
+# Catppuccin Frappe palette colors on key modules
 [directory]
 read_only = " 󰌾"
-style = "bold #8aadf4"
+style = "bold #f4b8e4"
 
 [git_branch]
 symbol = " "
-style = "bold #a6da95"
+style = "bold #ca9ee6"
 
 [git_status]
-style = "#eed49f"
+style = "#ea999c"
 
 [cmd_duration]
 min_time = 2_000
-style = "#f5a97f"
+style = "#eebebe"
 format = "took [$duration]($style) "
 
 [direnv]
