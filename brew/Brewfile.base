@@ -37,6 +37,7 @@ brew "yazi"              # Terminal file manager
 brew "zoxide"            # Smarter cd command
 brew "atuin"             # Shell history with sync
 brew "neovim"            # Modern vim
+brew "fastfetch"         # System info
 
 # Additional dev tools
 brew "tlrc"              # Rust tldr client

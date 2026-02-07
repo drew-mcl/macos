@@ -34,6 +34,16 @@ run `ws help` for all commands.
 
 run `make` in the repo to see all targets.
 
+## try it out
+
+```bash
+fastfetch                # see your system at a glance
+y                        # browse files in yazi, open one in nvim
+lazygit                  # full git workflow in your terminal
+btm                      # live system monitor
+z repos                  # jump to ~/repos instantly
+```
+
 ## [docs](docs/README.md)
 
 - [bootstrap guide](docs/bootstrap.md)
