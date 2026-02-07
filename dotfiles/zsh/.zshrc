@@ -290,7 +290,7 @@ repo() {
 ws() {
   local WS="${LAPTOP_SETUP:-$HOME/repos/laptop-setup}"
   case "${1:-help}" in
-    brew)     $EDITOR "$WS/brew/" ;;
+    brew)     $EDITOR "$WS/brew/Brewfile.base" ;;
     zsh)      $EDITOR "$WS/dotfiles/zsh/.zshrc" ;;
     env)      $EDITOR "$WS/dotfiles/zsh/.zshenv" ;;
     git)      $EDITOR "$WS/dotfiles/git/.gitconfig" ;;
@@ -331,24 +331,24 @@ ws() {
       zsh -xvs -i -c exit 2>&1 | head -50
       ;;
     help|*)
-      echo "ws - workstation config manager"
-      echo ""
-      echo "  ws brew      Edit Brewfiles"
-      echo "  ws zsh       Edit .zshrc"
-      echo "  ws env       Edit .zshenv"
-      echo "  ws git       Edit .gitconfig"
-      echo "  ws ghostty   Edit Ghostty config"
-      echo "  ws nvim      Edit Neovim config"
-      echo "  ws mise      Edit mise runtime versions"
-      echo "  ws star      Edit Starship prompt"
-      echo "  ws ssh       Edit SSH config"
-      echo "  ws claude    Edit global CLAUDE.md"
-      echo "  ws edit      FZF picker for any config"
-      echo "  ws sync      Commit + push changes"
-      echo "  ws stow      Re-stow all packages"
-      echo "  ws doctor    Run diagnostics + drift check"
-      echo "  ws update    Brew update + restow"
-      echo "  ws profile   Shell startup time profiling"
+      printf "\n  \033[38;5;141m\033[1mws\033[0m \033[2mworkstation config manager\033[0m\n\n"
+      printf "  \033[36m%-12s\033[0m %s\n" "brew"    "Edit Brewfile"
+      printf "  \033[36m%-12s\033[0m %s\n" "zsh"     "Edit .zshrc"
+      printf "  \033[36m%-12s\033[0m %s\n" "env"     "Edit .zshenv"
+      printf "  \033[36m%-12s\033[0m %s\n" "git"     "Edit .gitconfig"
+      printf "  \033[36m%-12s\033[0m %s\n" "ghostty" "Edit Ghostty config"
+      printf "  \033[36m%-12s\033[0m %s\n" "nvim"    "Edit Neovim config"
+      printf "  \033[36m%-12s\033[0m %s\n" "mise"    "Edit mise runtime versions"
+      printf "  \033[36m%-12s\033[0m %s\n" "star"    "Edit Starship prompt"
+      printf "  \033[36m%-12s\033[0m %s\n" "ssh"     "Edit SSH config"
+      printf "  \033[36m%-12s\033[0m %s\n" "claude"  "Edit global CLAUDE.md"
+      printf "  \033[36m%-12s\033[0m %s\n" "edit"    "FZF picker for any config"
+      printf "  \033[36m%-12s\033[0m %s\n" "sync"    "Commit + push changes"
+      printf "  \033[36m%-12s\033[0m %s\n" "stow"    "Re-stow all packages"
+      printf "  \033[36m%-12s\033[0m %s\n" "doctor"  "Diagnostics + drift check"
+      printf "  \033[36m%-12s\033[0m %s\n" "update"  "Brew update + restow"
+      printf "  \033[36m%-12s\033[0m %s\n" "profile" "Shell startup profiling"
+      printf "\n"
       ;;
   esac
 }

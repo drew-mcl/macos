@@ -284,6 +284,20 @@ bin/kamal deploy       # Deploy via Kamal
 - **No emojis in code** - Use icon helpers
 - **Keep code idempotent** - Safe to re-run
 
+## README Style
+
+Root READMEs should be minimal and scannable. This does not apply to docs/ pages which can be more detailed.
+
+- **lowercase titles** — `# macos` not `# macOS Setup`
+- **short, punchy copy** — one-liners over paragraphs, let the tools speak for themselves
+- **code blocks over prose** — show commands, not explanations of commands
+- **no feature lists or badges** — don't enumerate what's inside, just show how to use it
+- **real emoji** — use ❤️ not `<3`, but sparingly
+- **no section bloat** — if it can be a one-liner, it should be
+- **link to docs/ for detail** — keep the README as a landing page, not a manual
+
+Reference: the `laptop-setup` README.md is the canonical example of this style.
+
 ## Task Tracking
 
 **Always use Task tools** (TaskCreate, TaskUpdate, TaskList) instead of TodoWrite for tracking work items. The Task tools provide better progress visibility and persist across sessions.

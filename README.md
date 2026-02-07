@@ -30,10 +30,6 @@ ws profile   # shell startup timing
 
 run `ws help` for all commands.
 
-## make
-
-run `make` in the repo to see all targets.
-
 ## try it out
 
 ```bash

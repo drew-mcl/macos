@@ -73,6 +73,10 @@ keychain-list() {
 # Load secrets on shell start
 _load_keychain_secrets
 
+# --- Editor -------------------------------------------------------------------
+export EDITOR=nvim
+export VISUAL=nvim
+
 # --- Workstation Paths --------------------------------------------------------
 export LAPTOP_SETUP="$HOME/repos/laptop-setup"
 export OBSIDIAN_VAULT="$HOME/Documents/Obsidian"
