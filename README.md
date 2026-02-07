@@ -5,7 +5,7 @@ a beautiful, opinionated dev workstation — made with ❤️
 ## setup
 
 your full dev environment, from nothing, in one command.
-catppuccin-themed, CLI-first, and configured like you spent weeks on it.
+months of config, just like that.
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/drew-mcl/macos/main/install.sh)
