@@ -1,38 +1,41 @@
 # macOS
 
-a beautiful, opinionated dev workstation — made with ♥
+a beautiful, opinionated dev workstation — made with ❤️
 
-## Quick Start
+## setup
+
+your full dev environment, from nothing, in one command.
+catppuccin-themed, CLI-first, and configured like you spent weeks on it.
 
 ```bash
 bash <(curl -fsSL https://raw.githubusercontent.com/drew-mcl/macos/main/install.sh)
 ```
 
-## `ws`
+## ws
 
 ```bash
-ws zsh       # Edit shell config
-ws brew      # Edit Brewfiles
-ws git       # Edit git config
-ws nvim      # Edit Neovim config
-ws edit      # FZF picker for any file
-ws sync      # Commit + push changes
-ws stow      # Re-symlink all dotfiles
-ws doctor    # Check for drift
-ws update    # Brew update + restow
-ws profile   # Shell startup timing
+ws zsh       # edit shell config
+ws brew      # edit brewfiles
+ws git       # edit git config
+ws nvim      # edit neovim config
+ws edit      # fzf picker for any file
+ws sync      # commit + push changes
+ws stow      # re-symlink all dotfiles
+ws doctor    # check for drift
+ws update    # brew update + restow
+ws profile   # shell startup timing
 ```
 
-Run `ws help` for all commands.
+run `ws help` for all commands.
 
-## Make
+## make
 
-Run `make` in the repo to see all targets.
+run `make` in the repo to see all targets.
 
-## [Docs](docs/README.md)
+## [docs](docs/README.md)
 
-- [Bootstrap Guide](docs/bootstrap.md)
-- [CLI Tools](docs/cli-tools.md)
-- [Shell Reference](docs/shell.md)
-- [Catppuccin Theme](docs/catppuccin.md)
-- [LazyVim Cheatsheet](docs/lazyvim-cheatsheet.md)
+- [bootstrap guide](docs/bootstrap.md)
+- [cli tools](docs/cli-tools.md)
+- [shell reference](docs/shell.md)
+- [catppuccin theme](docs/catppuccin.md)
+- [lazyvim cheatsheet](docs/lazyvim-cheatsheet.md)
