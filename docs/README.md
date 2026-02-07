@@ -1,6 +1,6 @@
 # Docs
 
-Reference documentation for the laptop-setup repo.
+Reference documentation for the macos repo.
 
 ## Pages
 

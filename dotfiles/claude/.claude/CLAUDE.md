@@ -104,7 +104,7 @@ feat(scope): description
 ## System Config Sync
 
 When modifying system configuration as part of development work, ensure changes are
-tracked in the laptop-setup repo for repeatability:
+tracked in the macos repo for repeatability:
 
 **What to sync (via `ws sync` or manual commit):**
 - Brew packages added/removed - update the relevant Brewfile
@@ -114,7 +114,7 @@ tracked in the laptop-setup repo for repeatability:
 - Environment variables added - update .zshenv
 
 **After making changes:**
-1. Edit the source file in ~/repos/laptop-setup (not the symlinked target)
+1. Edit the source file in ~/repos/macos (not the symlinked target)
 2. Run `ws stow` to re-symlink
 3. Run `ws sync` to commit and push to main
 
@@ -296,7 +296,7 @@ Root READMEs should be minimal and scannable. This does not apply to docs/ pages
 - **no section bloat** — if it can be a one-liner, it should be
 - **link to docs/ for detail** — keep the README as a landing page, not a manual
 
-Reference: the `laptop-setup` README.md is the canonical example of this style.
+Reference: the `macos` README.md is the canonical example of this style.
 
 ## Task Tracking
 

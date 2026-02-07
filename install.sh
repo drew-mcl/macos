@@ -12,7 +12,7 @@ RED='\033[38;5;204m'
 RESET='\033[0m'
 
 REPO_URL="https://github.com/drew-mcl/macos.git"
-REPO_DIR="$HOME/repos/laptop-setup"
+REPO_DIR="$HOME/repos/macos"
 
 # --- Helpers -----------------------------------------------------------------
 step() { printf "\n${BLUE}${BOLD}==>${RESET} ${BOLD}%s${RESET}\n" "$1"; }

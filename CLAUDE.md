@@ -9,9 +9,9 @@ This is a macOS laptop setup repository using GNU Stow for dotfile management an
 ## Common Commands
 
 ```bash
-make bootstrap        # Full setup: git, ssh, brew, stow, oh-my-zsh, mise
+make bootstrap        # Full setup: git, ssh, brew, github, stow, oh-my-zsh, mise, macos
 make stow             # Restow all dotfiles after changes
-make stow-clean       # Backup conflicts to ~/.local/share/laptop-setup/backups/, then restow
+make stow-clean       # Backup conflicts to ~/.local/share/macos/backups/, then restow
 make doctor           # Print diagnostics for installed tools
 make brew             # Install all Homebrew packages (base + apps)
 make mise-install     # Install language runtimes from mise config

@@ -2,7 +2,7 @@
 
 # --- Keychain Secrets --------------------------------------------------------
 # Load secrets from macOS Keychain into environment variables.
-# Secrets are stored with service name "laptop-setup:<VAR_NAME>"
+# Secrets are stored with service name "macos:<VAR_NAME>"
 #
 # To add a secret:   keychain-set GITHUB_PAT "your-token-here"
 # To get a secret:   keychain-get GITHUB_PAT
@@ -16,7 +16,7 @@ _KEYCHAIN_SECRETS=(
 
 # Load secrets silently - only exports if the secret exists
 _load_keychain_secrets() {
-  local service_prefix="laptop-setup"
+  local service_prefix="macos"
   local var
   for var in "${_KEYCHAIN_SECRETS[@]}"; do
     local value
@@ -33,9 +33,9 @@ keychain-set() {
     return 1
   fi
   # Delete existing entry if present (ignore errors)
-  security delete-generic-password -a "$USER" -s "laptop-setup:${var}" 2>/dev/null || true
+  security delete-generic-password -a "$USER" -s "macos:${var}" 2>/dev/null || true
   # Add new entry
-  security add-generic-password -a "$USER" -s "laptop-setup:${var}" -w "$value"
+  security add-generic-password -a "$USER" -s "macos:${var}" -w "$value"
   echo "Stored ${var} in Keychain"
   # Also export immediately in current shell
   export "${var}=${value}"
@@ -48,7 +48,7 @@ keychain-get() {
     echo "Usage: keychain-get VAR_NAME" >&2
     return 1
   fi
-  security find-generic-password -a "$USER" -s "laptop-setup:${var}" -w 2>/dev/null
+  security find-generic-password -a "$USER" -s "macos:${var}" -w 2>/dev/null
 }
 
 # Helper: Remove a secret from Keychain
@@ -58,16 +58,16 @@ keychain-rm() {
     echo "Usage: keychain-rm VAR_NAME" >&2
     return 1
   fi
-  security delete-generic-password -a "$USER" -s "laptop-setup:${var}" 2>/dev/null && \
+  security delete-generic-password -a "$USER" -s "macos:${var}" 2>/dev/null && \
     echo "Removed ${var} from Keychain" || \
     echo "Secret ${var} not found" >&2
 }
 
-# Helper: List all laptop-setup secrets in Keychain
+# Helper: List all macos secrets in Keychain
 keychain-list() {
-  echo "Secrets in Keychain (laptop-setup:*):"
-  security dump-keychain 2>/dev/null | grep -A4 '"laptop-setup:' | grep '"svce"' | \
-    sed 's/.*"laptop-setup:\([^"]*\)".*/  \1/' | sort -u
+  echo "Secrets in Keychain (macos:*):"
+  security dump-keychain 2>/dev/null | grep -A4 '"macos:' | grep '"svce"' | \
+    sed 's/.*"macos:\([^"]*\)".*/  \1/' | sort -u
 }
 
 # Load secrets on shell start
@@ -78,7 +78,7 @@ export EDITOR=nvim
 export VISUAL=nvim
 
 # --- Workstation Paths --------------------------------------------------------
-export LAPTOP_SETUP="$HOME/repos/laptop-setup"
+export MACOS_SETUP="$HOME/repos/macos"
 export OBSIDIAN_VAULT="$HOME/Documents/Obsidian"
 
 # --- Claude Code Configuration ------------------------------------------------

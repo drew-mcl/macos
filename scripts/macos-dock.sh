@@ -7,30 +7,47 @@ if [[ "$OSTYPE" != darwin* ]]; then
 fi
 
 if ! command -v dockutil >/dev/null 2>&1; then
-  cat <<'EOF'
-[macos-dock] 'dockutil' not found. Install it via Homebrew (brew install dockutil)
-or ensure the Makefile's brew targets have been run.
-EOF
+  echo "[macos-dock] 'dockutil' not found — install with: brew install dockutil"
   exit 0
 fi
 
 APPS=(
-  "/Applications/Ghostty.app"
+  "/System/Applications/Safari.app"
+  "/System/Applications/Mail.app"
+  "/System/Applications/System Settings.app"
+  "/Applications/draw.io.app"
   "/Applications/Obsidian.app"
+  "/Applications/Ghostty.app"
 )
 
-echo "[macos-dock] Pinning apps to Dock..."
+echo ""
+echo "[macos-dock] This will:"
+echo "  - Remove ALL current Dock items"
+echo "  - Pin these apps (in order):"
+for app in "${APPS[@]}"; do
+  name=$(basename "$app" .app)
+  echo "    • $name"
+done
+echo ""
 
+read -r -p "[macos-dock] Continue? (y/n) " answer
+if [[ "$answer" != [yY] ]]; then
+  echo "[macos-dock] Skipped."
+  exit 0
+fi
+
+echo "[macos-dock] Clearing Dock..."
+dockutil --remove all --no-restart
+
+echo "[macos-dock] Adding apps..."
 for app in "${APPS[@]}"; do
   if [[ ! -d "$app" ]]; then
     echo "[macos-dock] Skipping missing app: $app"
     continue
   fi
-
-  dockutil --remove "$app" --no-restart >/dev/null 2>&1 || true
   dockutil --add "$app" --no-restart
 done
 
 killall Dock >/dev/null 2>&1 || true
 
-echo "[macos-dock] Dock updated."
+echo "[macos-dock] Done."

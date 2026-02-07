@@ -229,8 +229,8 @@ sshx() {
 
 ssh-host() {
   local script
-  if [[ -x "${LAPTOP_SETUP:-$HOME/repos/laptop-setup}/scripts/ssh-host.sh" ]]; then
-    script="${LAPTOP_SETUP:-$HOME/repos/laptop-setup}/scripts/ssh-host.sh"
+  if [[ -x "${MACOS_SETUP:-$HOME/repos/macos}/scripts/ssh-host.sh" ]]; then
+    script="${MACOS_SETUP:-$HOME/repos/macos}/scripts/ssh-host.sh"
   elif [[ -x "$PWD/scripts/ssh-host.sh" ]]; then
     script="$PWD/scripts/ssh-host.sh"
   else
@@ -288,7 +288,7 @@ repo() {
 
 # --- ws: workstation config manager ------------------------------------------
 ws() {
-  local WS="${LAPTOP_SETUP:-$HOME/repos/laptop-setup}"
+  local WS="${MACOS_SETUP:-$HOME/repos/macos}"
   case "${1:-help}" in
     brew)     $EDITOR "$WS/brew/Brewfile.base" ;;
     zsh)      $EDITOR "$WS/dotfiles/zsh/.zshrc" ;;

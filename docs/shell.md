@@ -85,7 +85,7 @@ Set in `.zshenv`:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `LAPTOP_SETUP` | `~/repos/laptop-setup` | Path to this repo |
+| `MACOS_SETUP` | `~/repos/macos` | Path to this repo |
 | `OBSIDIAN_VAULT` | `~/Documents/Obsidian` | Path to Obsidian vault |
 | `CLAUDE_CODE_ENABLE_TASKS` | `true` | Enable Claude Code task tracking |
 | `BAT_THEME` | `Catppuccin Macchiato` | bat/cat syntax theme |

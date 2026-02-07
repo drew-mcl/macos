@@ -12,8 +12,8 @@ From a fresh macOS install to a fully-loaded development environment.
 
 ```bash
 # 1. Clone the repo (using HTTPS initially, before SSH is set up)
-git clone https://github.com/drew-mcl/laptop-setup.git ~/repos/laptop-setup
-cd ~/repos/laptop-setup
+git clone https://github.com/drew-mcl/macos.git ~/repos/macos
+cd ~/repos/macos
 
 # 2. Run the full bootstrap
 make bootstrap
@@ -34,10 +34,12 @@ The bootstrap runs these targets in order:
 | 2 | `setup-ssh` | Generates ed25519 key, adds to macOS keychain |
 | 3 | `install-brew` | Installs Homebrew if not present |
 | 4 | `brew` | Installs all formulae and casks from Brewfiles |
-| 5 | `stow-clean` | Backs up conflicting dotfiles, then symlinks all packages |
-| 6 | `stow` | Re-stows all dotfile packages to `$HOME` |
-| 7 | `oh-my-zsh` | Installs oh-my-zsh framework |
-| 8 | `mise-install` | Installs language runtimes (Ruby, Node, Python, Go, Rust) |
+| 5 | `setup-github` | Authenticates with GitHub CLI and uploads SSH key |
+| 6 | `stow-clean` | Backs up conflicting dotfiles, then symlinks all packages |
+| 7 | `stow` | Re-stows all dotfile packages to `$HOME` |
+| 8 | `oh-my-zsh` | Installs oh-my-zsh framework |
+| 9 | `mise-install` | Installs language runtimes (Ruby, Node, Python, Go, Rust) |
+| 10 | `macos` | Applies macOS defaults (Finder, Dock, keyboard) with confirmation |
 
 ## Environment Variables
 
@@ -52,10 +54,8 @@ Or create a `.env` file in the repo root with these values.
 
 ## After Bootstrap
 
-1. **Add SSH key to GitHub**: `gh ssh-key add ~/.ssh/id_ed25519.pub --title "$(hostname)"`
-2. **Switch remote to SSH**: `git remote set-url origin git@github.com:drew-mcl/laptop-setup.git`
-3. **Set up Obsidian**: Open Obsidian, create vault at `~/Documents/Obsidian`
-4. **macOS preferences**: `make macos` (adjusts Dock, Finder, keyboard settings)
+1. **Switch remote to SSH**: `git remote set-url origin git@github.com:drew-mcl/macos.git`
+2. **Set up Obsidian**: Open Obsidian, create vault at `~/Documents/Obsidian`
 
 ## Customization
 
@@ -75,7 +75,7 @@ Put machine-specific setup in `custom/` and run with `make custom`.
 
 ### Stow conflicts
 
-If `make stow` fails with conflicts, run `make stow-clean` which backs up conflicting files to `~/.local/share/laptop-setup/backups/` before restowing.
+If `make stow` fails with conflicts, run `make stow-clean` which backs up conflicting files to `~/.local/share/macos/backups/` before restowing.
 
 ### Homebrew not found after install
 

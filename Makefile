@@ -25,7 +25,7 @@ export HOMEBREW_NO_AUTO_UPDATE := 1
 export HOMEBREW_NO_INSTALL_CLEANUP := 1
 export HOMEBREW_NO_ANALYTICS := 1
 
-.PHONY: help bootstrap setup-git setup-ssh install-brew brew stow stow-clean unstow oh-my-zsh dirs ssh macos custom doctor mise-install refresh git-monorepo nuke
+.PHONY: help bootstrap setup-git setup-ssh install-brew brew setup-github stow stow-clean unstow oh-my-zsh dirs ssh macos custom doctor mise-install refresh git-monorepo nuke
 
 help: ## Show all available targets
 	@printf "\n  $(MAUVE)$(BOLD)macOS$(RESET) $(DIM)workstation targets$(RESET)\n\n"
@@ -33,13 +33,12 @@ help: ## Show all available targets
 		awk 'BEGIN {FS = ":.*?## "}; {printf "  $(CYAN)%-20s$(RESET) %s\n", $$1, $$2}'
 	@printf "\n"
 
-bootstrap: setup-git setup-ssh install-brew brew stow-clean stow oh-my-zsh mise-install ## Full setup from scratch
+bootstrap: setup-git setup-ssh install-brew brew setup-github stow-clean stow oh-my-zsh mise-install macos ## Full setup from scratch
 	@printf "\n"
 	@printf "  $(GREEN)$(BOLD)Bootstrap complete!$(RESET)\n"
 	@printf "\n"
 	@printf "  $(DIM)Open a new terminal to load your shell config.$(RESET)\n"
 	@printf "  $(DIM)Run $(RESET)$(BOLD)ws help$(RESET)$(DIM) to manage your workstation.$(RESET)\n"
-	@printf "  $(DIM)Consider: $(RESET)$(BOLD)make macos$(RESET)\n"
 	@printf "\n"
 
 setup-git: ## Configure git identity and sensible defaults
@@ -96,6 +95,10 @@ install-brew: ## Install Homebrew if not present
 		for brew_candidate in /opt/homebrew/bin/brew /usr/local/bin/brew; do \
 			if [ -x "$$brew_candidate" ]; then eval "$$($$brew_candidate shellenv)"; break; fi; \
 		done; \
+		if [ -f "$$HOME/.zprofile" ] && grep -q 'brew shellenv' "$$HOME/.zprofile" 2>/dev/null; then \
+			sed -i '' '/brew shellenv/d' "$$HOME/.zprofile"; \
+			printf "  $(DIM)Cleaned brew shellenv from .zprofile$(RESET)\n"; \
+		fi; \
 		printf "  $(GREEN)Installed$(RESET)\n"; \
 	else \
 		printf "  $(GREEN)Already installed$(RESET) $$(brew --version 2>/dev/null | head -1)\n"; \
@@ -113,6 +116,29 @@ brew: ## Install all Homebrew packages
 	fi
 	@printf "  $(GREEN)All packages installed$(RESET)\n"
 
+setup-github: ## Authenticate with GitHub and upload SSH key
+	@printf "\n$(BLUE)$(BOLD)==>$(RESET) $(BOLD)GitHub setup$(RESET)\n"
+	@if ! command -v gh >/dev/null 2>&1; then \
+		printf "  $(DIM)gh not found, skipping$(RESET)\n"; \
+	elif gh auth status >/dev/null 2>&1; then \
+		printf "  $(GREEN)Already authenticated$(RESET)\n"; \
+		if [ -f "$$HOME/.ssh/id_ed25519.pub" ]; then \
+			gh ssh-key add "$$HOME/.ssh/id_ed25519.pub" --title "$$(hostname)" 2>/dev/null && \
+				printf "  $(GREEN)SSH key uploaded$(RESET)\n" || \
+				printf "  $(DIM)SSH key already on GitHub$(RESET)\n"; \
+		fi; \
+	else \
+		printf "  $(DIM)Logging in to GitHub...$(RESET)\n"; \
+		gh auth login --web --git-protocol ssh && \
+			printf "  $(GREEN)Authenticated$(RESET)\n" || \
+			{ printf "  $(PEACH)GitHub login skipped$(RESET)\n"; exit 0; }; \
+		if [ -f "$$HOME/.ssh/id_ed25519.pub" ]; then \
+			gh ssh-key add "$$HOME/.ssh/id_ed25519.pub" --title "$$(hostname)" 2>/dev/null && \
+				printf "  $(GREEN)SSH key uploaded$(RESET)\n" || \
+				printf "  $(DIM)SSH key already on GitHub$(RESET)\n"; \
+		fi; \
+	fi
+
 stow: ## Symlink all dotfiles to $HOME
 	@printf "\n$(BLUE)$(BOLD)==>$(RESET) $(BOLD)Stowing dotfiles$(RESET)\n"
 	@command -v stow >/dev/null 2>&1 || { printf "  $(RED)stow not found. Run 'make brew' first.$(RESET)\n"; exit 1; }
@@ -129,7 +155,7 @@ stow: ## Symlink all dotfiles to $HOME
 stow-clean: ## Backup conflicts then restow
 	@command -v stow >/dev/null 2>&1 || { printf "  $(RED)stow not found. Run 'make brew' first.$(RESET)\n"; exit 1; }
 	@printf "\n$(BLUE)$(BOLD)==>$(RESET) $(BOLD)Resolving conflicts$(RESET)\n"
-	@backup_root="$$HOME/.local/share/laptop-setup/backups"; \
+	@backup_root="$$HOME/.local/share/macos/backups"; \
 	timestamp="$$(date +%Y%m%d-%H%M%S)"; \
 	backup_dir="$$backup_root/$$timestamp"; \
 	mkdir -p "$$backup_dir"; \
@@ -207,9 +233,17 @@ doctor: ## Print environment diagnostics
 	@printf "\n"
 
 nuke: ## Full reset: unstow, remove oh-my-zsh, re-bootstrap
-	@printf "\n  $(RED)$(BOLD)WARNING$(RESET) This will unstow dotfiles, remove ~/.oh-my-zsh, and rerun bootstrap.\n\n"
+	@printf "\n  $(RED)$(BOLD)NUKE$(RESET) $(DIM)full reset and re-bootstrap$(RESET)\n\n"
+	@printf "  This will:\n"
+	@printf "  $(RED)•$(RESET) Remove all dotfile symlinks (unstow)\n"
+	@printf "  $(RED)•$(RESET) Delete ~/.oh-my-zsh\n"
+	@printf "  $(RED)•$(RESET) Re-run full bootstrap from scratch\n"
+	@printf "\n"
 	@read -r -p "  Type 'yes' to continue: " answer; \
 	[ "$$answer" = "yes" ] || { printf "  $(DIM)Aborted.$(RESET)\n"; exit 1; }
+	@printf "\n"
 	@$(MAKE) unstow
+	@printf "  $(DIM)Removing ~/.oh-my-zsh...$(RESET)\n"
 	@rm -rf "$$HOME/.oh-my-zsh"
+	@printf "  $(GREEN)Cleaned$(RESET)\n"
 	@$(MAKE) bootstrap

@@ -1,8 +1,6 @@
-brew "git"
 brew "git-delta"
 brew "git-cliff"
 brew "stow"
-brew "make"
 brew "jq"
 brew "ripgrep"
 brew "fd"

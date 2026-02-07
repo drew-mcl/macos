@@ -6,7 +6,24 @@ if [[ "$OSTYPE" != darwin* ]]; then
   exit 0
 fi
 
-echo "[macos] Applying safe macOS defaults..."
+echo ""
+echo "[macos] This will apply the following defaults:"
+echo "  - Finder: show all extensions, status bar, path bar"
+echo "  - Finder: search current folder, list view"
+echo "  - Dock: auto-hide with fast animation"
+echo "  - Keyboard: key repeat on, no press-and-hold"
+echo "  - Save to disk by default (not iCloud)"
+echo "  - Show ~/Library folder"
+echo "  - Configure Dock apps"
+echo ""
+
+read -r -p "[macos] Continue? (y/n) " answer
+if [[ "$answer" != [yY] ]]; then
+  echo "[macos] Skipped."
+  exit 0
+fi
+
+echo "[macos] Applying macOS defaults..."
 
 # Finder: show all filename extensions
 defaults write NSGlobalDomain AppleShowAllExtensions -bool true
