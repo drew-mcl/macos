@@ -1,4 +1,4 @@
-# macOS
+# macos
 
 a beautiful, opinionated dev workstation — made with ❤️
 
