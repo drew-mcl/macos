@@ -15,10 +15,8 @@ EOF
 fi
 
 APPS=(
-  "/Applications/Visual Studio Code.app"
   "/Applications/Ghostty.app"
   "/Applications/Obsidian.app"
-  "/Applications/draw.io.app"
 )
 
 echo "[macos-dock] Pinning apps to Dock..."

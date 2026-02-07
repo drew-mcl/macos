@@ -1,10 +1,10 @@
 # Global mise configuration for language runtimes.
 # Customize versions per project with `.mise.toml`.
 [tools]
-ruby = "3"
+ruby = "4"
 node = "lts"
-python = "3.12"
-go = "1.22"
+python = "3.14"
+go = "1.25"
 rust = "stable"
-"ansible-core" = "2.15.3"
+ansible-core = "2.20.1"
 "gem:rails" = "latest"

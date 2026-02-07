@@ -101,6 +101,25 @@ feat(scope): description
 | `/code-review` | Review a pull request |
 | `/review-pr` | Comprehensive PR review with agents |
 
+## System Config Sync
+
+When modifying system configuration as part of development work, ensure changes are
+tracked in the laptop-setup repo for repeatability:
+
+**What to sync (via `ws sync` or manual commit):**
+- Brew packages added/removed - update the relevant Brewfile
+- Runtime versions changed - update mise config.toml
+- Shell aliases or functions added - update .zshrc
+- New tools installed - update Brewfile.base and docs/cli-tools.md
+- Environment variables added - update .zshenv
+
+**After making changes:**
+1. Edit the source file in ~/repos/laptop-setup (not the symlinked target)
+2. Run `ws stow` to re-symlink
+3. Run `ws sync` to commit and push to main
+
+Never modify symlinked config files directly - always edit the source in the repo.
+
 ## Available CLI Tools
 
 ### Git & Version Control
@@ -227,7 +246,8 @@ feat(scope): description
 | `repo` | FZF browse + clone GitHub/GitLab repos |
 | `aa` | FZF alias browser |
 | `envim` | Open nearest .env file in nvim |
-| `code-dotfiles` | Open dotfiles repo in VS Code |
+| `ws <cmd>` | Workstation config manager |
+| `obsidian-sync` | Git sync Obsidian vault |
 
 ## Development Workflows
 

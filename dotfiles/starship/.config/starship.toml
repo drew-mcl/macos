@@ -1,8 +1,25 @@
+# Catppuccin Macchiato palette colors on key modules
+[directory]
+read_only = " 󰌾"
+style = "bold #8aadf4"
+
+[git_branch]
+symbol = " "
+style = "bold #a6da95"
+
+[git_status]
+style = "#eed49f"
+
+[cmd_duration]
+min_time = 2_000
+style = "#f5a97f"
+format = "took [$duration]($style) "
+
 [direnv]
 disabled = false
 detect_files = ['.envrc', '.env']
 
-#symbol stuff
+# Nerd font symbols
 [aws]
 symbol = "  "
 
@@ -33,9 +50,6 @@ symbol = " "
 [deno]
 symbol = " "
 
-[directory]
-read_only = " 󰌾"
-
 [docker_context]
 symbol = " "
 
@@ -54,8 +68,6 @@ symbol = " "
 [gcloud]
 symbol = "  "
 
-[git_branch]
-symbol = " "
 
 [git_commit]
 tag_symbol = '  '
@@ -191,5 +203,3 @@ symbol = " "
 [zig]
 symbol = " "
 
-[gradle]
-symbol = " "

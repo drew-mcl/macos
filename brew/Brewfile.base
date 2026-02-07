@@ -19,7 +19,6 @@ brew "tree"
 brew "zsh-autosuggestions"
 brew "zsh-syntax-highlighting"
 brew "ansible"
-brew "pipx"
 brew "dockutil"
 brew "kubernetes-cli"
 brew "helm"
@@ -49,3 +48,4 @@ brew "tokei"             # Code statistics
 brew "lazydocker"        # Docker TUI
 brew "httpie"            # Better curl for APIs
 brew "xh"                # Even faster httpie alternative
+brew "gemini-cli"        # Google Gemini CLI

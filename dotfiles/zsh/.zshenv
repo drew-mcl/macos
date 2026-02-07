@@ -73,5 +73,9 @@ keychain-list() {
 # Load secrets on shell start
 _load_keychain_secrets
 
+# --- Workstation Paths --------------------------------------------------------
+export LAPTOP_SETUP="$HOME/repos/laptop-setup"
+export OBSIDIAN_VAULT="$HOME/Documents/Obsidian"
+
 # --- Claude Code Configuration ------------------------------------------------
 export CLAUDE_CODE_ENABLE_TASKS=true

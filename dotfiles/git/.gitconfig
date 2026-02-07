@@ -8,7 +8,7 @@
 
 [core]
 	autocrlf = input
-	editor = code --wait
+	editor = nvim
 	untrackedCache = true
 	hooksPath = ~/.config/git/hooks
 
@@ -74,15 +74,10 @@
 [delta]
 	navigate = true
 	line-numbers = true
+	syntax-theme = Catppuccin Macchiato
 
 [credential]
 	helper = osxkeychain
-
-[includeIf "gitdir:~/repos/work/"]
-	path = ~/.gitconfig.work
-
-[includeIf "gitdir:~/repos/personal/"]
-	path = ~/.gitconfig.personal
 
 [diff]
 	algorithm = histogram

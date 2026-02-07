@@ -1,0 +1,24 @@
+name: Validate
+on: [push, pull_request]
+jobs:
+  lint:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Shellcheck scripts
+        run: |
+          brew install shellcheck
+          shellcheck scripts/*.sh
+      - name: Validate Brewfiles
+        run: |
+          brew bundle check --file=brew/Brewfile.base || true
+          brew bundle check --file=brew/Brewfile.apps || true
+      - name: Stow dry-run
+        run: |
+          brew install stow
+          mkdir -p /tmp/stow-test
+          for pkg in dotfiles/*/; do
+            stow --no-folding --simulate -d dotfiles -t /tmp/stow-test "$(basename "$pkg")" 2>&1 || true
+          done
+      - name: Makefile syntax
+        run: make -n help

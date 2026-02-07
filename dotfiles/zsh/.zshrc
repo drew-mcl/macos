@@ -11,7 +11,7 @@ if [[ -z ${HOMEBREW_PREFIX:-} ]]; then
 fi
 
 typeset -gU path PATH
-path=("$HOME/.bundle/bin" "$HOME/.local/bin" "$HOME/bin" $path)
+path=("$HOME/.bundle/bin" "$HOME/.local/bin" $path)
 
 path_prepend_if_exists() {
   local dir
@@ -37,6 +37,16 @@ setopt CORRECT
 bindkey -e
 export ENABLE_CORRECTION="true"
 export SPROMPT='zsh: correct %F{yellow}%R%f to %F{green}%r%f [nyae]? '
+
+# --- Catppuccin Macchiato palette for CLI tools ------------------------------
+export BAT_THEME="Catppuccin Macchiato"
+export FZF_DEFAULT_OPTS=" \
+  --color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796 \
+  --color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6 \
+  --color=marker:#b7bdf8,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796 \
+  --color=selected-bg:#494d64 \
+  --border=rounded --prompt='> ' --pointer='◆' --marker='>' \
+  --separator='─' --scrollbar='│' --info=right"
 
 # --- Oh My Zsh & plugins -----------------------------------------------------
 export ZSH="$HOME/.oh-my-zsh"
@@ -131,9 +141,9 @@ fi
 if command -v procs >/dev/null 2>&1; then
   alias ps='procs'
 fi
-if command -v bottom >/dev/null 2>&1; then
-  alias top='btm'
-  alias htop='btm'
+if command -v btm >/dev/null 2>&1; then
+  alias top='btm --color gruvbox'
+  alias htop='btm --color gruvbox'
 fi
 alias vim='nvim'
 alias vi='nvim'
@@ -219,8 +229,8 @@ sshx() {
 
 ssh-host() {
   local script
-  if [[ -x "$HOME/laptop-setup/scripts/ssh-host.sh" ]]; then
-    script="$HOME/laptop-setup/scripts/ssh-host.sh"
+  if [[ -x "${LAPTOP_SETUP:-$HOME/repos/laptop-setup}/scripts/ssh-host.sh" ]]; then
+    script="${LAPTOP_SETUP:-$HOME/repos/laptop-setup}/scripts/ssh-host.sh"
   elif [[ -x "$PWD/scripts/ssh-host.sh" ]]; then
     script="$PWD/scripts/ssh-host.sh"
   else
@@ -246,26 +256,6 @@ envim() {
   nvim "$envfile"
 }
 
-code-dotfiles() {
-  command -v code >/dev/null 2>&1 || { echo "VS Code CLI 'code' not found. Run: make vscode" >&2; return 1; }
-  local repo="${DOTFILES_REPO_DIR:-}" target candidate
-  if [[ -z $repo && -L "$HOME/.zshrc" ]]; then
-    target=$(readlink "$HOME/.zshrc")
-    [[ $target != /* ]] && target="$HOME/$target"
-    repo=$(dirname "$(dirname "$(dirname "$target")")")
-  fi
-  if [[ -z $repo ]]; then
-    for candidate in "$HOME/repos/work/laptop-setup" "$HOME/repos/personal/laptop-setup" "$HOME/laptop-setup"; do
-      if [[ -d "$candidate/.git" ]]; then
-        repo="$candidate"
-        break
-      fi
-    done
-  fi
-  [[ -n $repo ]] || { echo "Set DOTFILES_REPO_DIR or place repo under ~/repos/{work,personal}" >&2; return 1; }
-  code "$repo"
-}
-
 repo() {
   command -v fzf >/dev/null 2>&1 || { echo "fzf not installed" >&2; return 1; }
   local -a rows=()
@@ -283,17 +273,11 @@ repo() {
     done < <(glab repo list --no-headers -n 200 2>/dev/null || true)
   fi
   (( ${#rows[@]} )) || { echo "No repos found via gh or glab" >&2; return 1; }
-  local selection name url destination_base destination_dir answer
+  local selection name url destination_dir
   selection=$(printf '%s\n' "${rows[@]}" | column -t -s $'\t' | fzf --ansi --prompt='repo> ' --height=80% --preview 'echo {1} {2}\n{3}') || return 1
   name=$(echo "$selection" | awk '{print $2}')
   url=$(echo "$selection" | awk '{print $3}')
-  vared -p "Destination [w]ork/[p]ersonal: " answer
-  case "${answer:l}" in
-    p|personal) destination_base="$HOME/repos/personal" ;;
-    *) destination_base="$HOME/repos/work" ;;
-  esac
-  mkdir -p "$destination_base"
-  destination_dir="$destination_base/${name##*/}"
+  destination_dir="$HOME/repos/${name##*/}"
   if [[ -d "$destination_dir/.git" ]]; then
     echo "Exists: $destination_dir"
     cd "$destination_dir"
@@ -302,5 +286,95 @@ repo() {
   git clone "$url" "$destination_dir" && cd "$destination_dir"
 }
 
-# opencode
+# --- ws: workstation config manager ------------------------------------------
+ws() {
+  local WS="${LAPTOP_SETUP:-$HOME/repos/laptop-setup}"
+  case "${1:-help}" in
+    brew)     $EDITOR "$WS/brew/" ;;
+    zsh)      $EDITOR "$WS/dotfiles/zsh/.zshrc" ;;
+    env)      $EDITOR "$WS/dotfiles/zsh/.zshenv" ;;
+    git)      $EDITOR "$WS/dotfiles/git/.gitconfig" ;;
+    ghostty)  $EDITOR "$WS/dotfiles/ghostty/.config/ghostty/config" ;;
+    nvim)     $EDITOR "$WS/dotfiles/nvim/.config/nvim/" ;;
+    mise)     $EDITOR "$WS/dotfiles/mise/.config/mise/config.toml" ;;
+    star)     $EDITOR "$WS/dotfiles/starship/.config/starship.toml" ;;
+    ssh)      $EDITOR "$WS/dotfiles/ssh/.ssh/config" ;;
+    claude)   $EDITOR "$WS/dotfiles/claude/.claude/CLAUDE.md" ;;
+    edit)     fd . "$WS" -H --type f -E .git | fzf --preview 'bat --color=always {}' | xargs -r $EDITOR ;;
+    sync)     git -C "$WS" add -A && git -C "$WS" commit -m "sync: $(date +%Y-%m-%d-%H%M)" && git -C "$WS" push ;;
+    stow)     make -C "$WS" stow ;;
+    doctor)
+      echo "=== Brew Drift ==="
+      brew bundle check --file="$WS/brew/Brewfile.base" 2>&1 || true
+      brew bundle check --file="$WS/brew/Brewfile.apps" 2>&1 || true
+      echo ""
+      echo "=== Mise Drift ==="
+      mise doctor 2>&1 | head -20
+      echo ""
+      echo "=== Stow Status ==="
+      for pkg in $WS/dotfiles/*/; do
+        local pkg_name=$(basename "$pkg")
+        stow --no-folding --simulate -d "$WS/dotfiles" -t "$HOME" "$pkg_name" 2>&1 | grep -v "^$" && echo "  $pkg_name: needs restow" || true
+      done
+      echo ""
+      echo "=== Tool Versions ==="
+      make -C "$WS" doctor
+      ;;
+    update)   make -C "$WS" refresh ;;
+    profile)
+      echo "=== Shell startup time ==="
+      for i in 1 2 3; do
+        /usr/bin/time zsh -i -c exit 2>&1
+      done
+      echo ""
+      echo "=== Detailed trace (first 50 lines) ==="
+      zsh -xvs -i -c exit 2>&1 | head -50
+      ;;
+    help|*)
+      echo "ws - workstation config manager"
+      echo ""
+      echo "  ws brew      Edit Brewfiles"
+      echo "  ws zsh       Edit .zshrc"
+      echo "  ws env       Edit .zshenv"
+      echo "  ws git       Edit .gitconfig"
+      echo "  ws ghostty   Edit Ghostty config"
+      echo "  ws nvim      Edit Neovim config"
+      echo "  ws mise      Edit mise runtime versions"
+      echo "  ws star      Edit Starship prompt"
+      echo "  ws ssh       Edit SSH config"
+      echo "  ws claude    Edit global CLAUDE.md"
+      echo "  ws edit      FZF picker for any config"
+      echo "  ws sync      Commit + push changes"
+      echo "  ws stow      Re-stow all packages"
+      echo "  ws doctor    Run diagnostics + drift check"
+      echo "  ws update    Brew update + restow"
+      echo "  ws profile   Shell startup time profiling"
+      ;;
+  esac
+}
+
+_ws() {
+  local commands=(brew zsh env git ghostty nvim mise star ssh claude edit sync stow doctor update profile help)
+  _describe 'ws commands' commands
+}
+compdef _ws ws
+
+# --- obsidian-sync -----------------------------------------------------------
+obsidian-sync() {
+  local vault="${OBSIDIAN_VAULT:-$HOME/Documents/Obsidian}"
+  if [[ ! -d "$vault/.git" ]]; then
+    echo "Initializing git repo in $vault..."
+    git -C "$vault" init
+    git -C "$vault" remote add origin git@github.com:drew-mcl/obsidian.git
+    git -C "$vault" branch -M main
+  fi
+  git -C "$vault" add -A
+  git -C "$vault" commit -m "vault sync: $(date +%Y-%m-%d-%H%M)" || echo "Nothing to sync"
+  git -C "$vault" push -u origin main
+}
+
+# --- opencode ----------------------------------------------------------------
 export PATH=/Users/drew/.opencode/bin:$PATH
+
+# --- Start in repos ----------------------------------------------------------
+cd ~/repos 2>/dev/null || true

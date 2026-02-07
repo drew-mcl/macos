@@ -1,6 +1,9 @@
 # Yazi - Terminal File Manager Configuration
 # https://yazi-rs.github.io/docs/configuration/yazi
 
+[flavor]
+use = "catppuccin-macchiato"
+
 [manager]
 ratio = [1, 4, 3]
 sort_by = "natural"
