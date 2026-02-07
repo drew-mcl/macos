@@ -13,6 +13,8 @@ bash <(curl -fsSL https://raw.githubusercontent.com/drew-mcl/macos/main/install.
 
 ## ws
 
+a helper that bundles editing, syncing, and diagnosing your workstation config into one command.
+
 ```bash
 ws zsh       # edit shell config
 ws brew      # edit brewfiles
